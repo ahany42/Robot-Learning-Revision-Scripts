@@ -1,0 +1,23 @@
+robot = rigidBodyTree;
+body1 = rigidBody('body1');
+body2 = rigidBody('body2');
+bodyEndEffector = rigidBody('endeffector');
+jnt1 = rigidBodyJoint('jnt1','revolute');
+jnt2 = rigidBodyJoint('jnt2','revolute');
+jnt1.HomePosition = deg2rad(0);
+jnt2.HomePosition = deg2rad(0);
+dh1 = [1 0 0 deg2rad(60)];
+dh2 = [0.5 0 0 deg2rad(60)];
+setFixedTransform(jnt1,dh1,'dh');
+setFixedTransform(jnt2,dh2,'dh');
+body1.Joint = jnt1;
+body2.Joint = jnt2;
+addBody(robot,body1,'base');
+addBody(robot,body2,'body1');
+addBody(robot,bodyEndEffector,'body2');
+config = homeConfiguration(robot);
+config(1).JointPosition = deg2rad(60);
+config(2).JointPosition = deg2rad(30);
+T = getTransform(robot,config,'endeffector','base');
+showdetails(robot)
+show(robot.config);
